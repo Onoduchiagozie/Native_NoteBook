@@ -1,8 +1,8 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import IndexScreen from "./components/IndexScreen";
-import { BlogProvider } from "./components/BlogContext";
+import IndexScreen from "./src/components/IndexScreen";
+import { BlogProvider } from "./src/components/BlogContext";
 import "./global.css";
 
 const Stack = createNativeStackNavigator();
