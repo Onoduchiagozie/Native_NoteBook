@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,18 +6,23 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrashCan, faPen } from "@fortawesome/free-solid-svg-icons";
 import { BlogContext } from "./BlogContext";
 
 const IndexScreen = ({}) => {
-  const { todoList, addTodo, RemoveTodo } = useContext(BlogContext);
+  const { todoList, addTodo, RemoveTodo, renderMe } = useContext(BlogContext);
+
   const [myValue, setValue] = useState("");
+
+  useEffect(() => {
+    renderMe();
+  }, []);
 
   const onSubmitTodo = (report) => {
     addTodo(report);
-    setValue("");
-    console.log(report);
+    setValue(" ");
   };
 
   return (
@@ -28,23 +33,35 @@ const IndexScreen = ({}) => {
         marginTop: 30,
       }}
     >
-      <Text style={{ fontSize: 20 }}>My TodoList Today !</Text>
+      <Text className="font-bold" style={{ fontSize: 20 }}>
+        My TodoList Today !
+      </Text>
 
-      <TextInput
-        value={myValue}
-        placeholder="Enter new post"
+      <View
         style={{
           padding: 15,
           margin: 15,
           marginBottom: 20,
           borderRadius: 10,
-          backgroundColor: "#735a27",
-          color: "#fff",
+
+          flexDirection: "row",
         }}
-        onChangeText={(x) => setValue(x)}
-        onSubmitEditing={() => onSubmitTodo(myValue)}
-      />
-      <FontAwesomeIcon icon={faTrashCan} />
+        className="bg-gray-700"
+      >
+        <TextInput
+          placeholder="Enter new post"
+          style={{ color: "white" }}
+          value={myValue}
+          onChangeText={(x) => setValue(x)}
+          onSubmitEditing={() => onSubmitTodo(myValue)}
+        />
+        <TouchableOpacity onPress={() => onSubmitTodo(myValue)}>
+          <FontAwesomeIcon
+            style={{ marginLeft: 15, marginTop: 5, width: 10 }}
+            icon={faPen}
+          />
+        </TouchableOpacity>
+      </View>
 
       <View
         style={{
@@ -54,6 +71,7 @@ const IndexScreen = ({}) => {
           height: "80%",
           borderRadius: 10,
         }}
+        className="p-1"
       >
         <FlatList
           data={todoList}
